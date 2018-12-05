@@ -52,7 +52,6 @@
 			n++;
 		}
 		aktualny->dalsi = NULL;
-		//*prvy = p;
 		printf("Nacitalo sa %d zaznamov.\n", n);
 	}
 	return;
@@ -73,12 +72,63 @@
 	}
 }
 
+ void pridaj(AUTO **prvy)
+{
+	AUTO *p,*pred = NULL,*pridaj;
+	int pozicia, n = 1, pom = 0;
+	char c;
+	p = *prvy;
+	pridaj = (AUTO*)malloc(sizeof(AUTO));
+	scanf("%d", &pozicia);
+	c = getchar();
+	fgets(pridaj->kategoria, 52, stdin);
+	fgets(pridaj->znacka, 52, stdin);
+	fgets(pridaj->predajca, 52, stdin);
+	scanf("%d", &pridaj->cena);
+	scanf("%d", &pridaj->datum_v);
+	c = getchar();
+	fgets(pridaj->stav, 52, stdin);
+
+ 	if (pozicia == 1)
+	{
+		*prvy = pridaj;
+		pridaj->dalsi = p;
+		pom = 1;
+	}
+	else
+		while (p != NULL)
+		{
+			if (pozicia == n)
+			{
+				pred->dalsi = pridaj;
+				pridaj->dalsi = p;
+				pom = 1;
+				break;
+			}
+			else
+			{
+				pred = p;
+				p = p->dalsi;
+				n++;
+			}
+		}
+
+ 	if (pom == 0)
+	{
+		pred->dalsi = pridaj;
+		pridaj->dalsi = NULL;
+	}
+
+ }
+
  int main()
 {
 	FILE *f;
-	AUTO *prvy;
+	AUTO *prvy = NULL;
 	nacitaj(&f, &prvy);
+	vypis(&prvy);
+	pridaj(&prvy);
 	vypis(&prvy);
 
  	return 0;
-} 
+}
