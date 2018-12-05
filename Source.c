@@ -122,7 +122,33 @@
 
  }
 
+ int porovnaj(char *slovo1, char *slovo2)
+{
+	int i, j, k = 0;
 
+ 	i = 0;
+	j = 0;
+
+ 	while (slovo1[i] != '\n')
+	{
+		if ((slovo1[i] == slovo2[j]) || (slovo1[i] == (slovo2[j]+32)) || (slovo1[i] == (slovo2[j] - 32)))
+			while (slovo2[j] != '\n')
+			{
+				k = 1;
+				if (((slovo1[i+j]%65)%32) != ((slovo2[j]%65)%32))
+				{
+					k = 2;
+					j = 0;
+					break;
+				}
+				j++;
+			}
+		if (k == 1)break;
+		i++;
+	}
+
+ 	return k;
+}
 
  void zmaz(AUTO **prvy)
 {
