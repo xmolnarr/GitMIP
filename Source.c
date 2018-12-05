@@ -68,7 +68,7 @@
 	while (p != NULL)
 	{
 		printf("%d.\nkategoria: %sznacka: %spredajca: %s", n, p->kategoria, p->znacka, p->predajca);
-		printf("cena: %d\ndatum_vyroby: %d\nstav_vozidla: %s", p->cena, p->datum_v, p->stav);
+		printf("cena: %d\nrok_vyroby: %d\nstav_vozidla: %s", p->cena, p->datum_v, p->stav);
 		p = p->dalsi;
 		n++;
 	}
@@ -91,7 +91,7 @@
 	c = getchar();
 	fgets(pridaj->stav, 52, stdin);
 
- 	if (pozicia == 1)
+ 	if ((pozicia == 1) || (*prvy == NULL))
 	{
 		*prvy = pridaj;
 		pridaj->dalsi = p;
@@ -158,9 +158,12 @@
 {
 	AUTO *p, *pred = NULL;
 	int k = 0;
-	char slovo[52];
+	char c,slovo[52];
 	p = *prvy;
+
+ 	c = getchar();
 	fgets(slovo, 52, stdin);
+	
 	printf("%s", slovo);
 	while (p != NULL)
 	{
@@ -208,30 +211,33 @@
  void hladaj(AUTO **prvy)
 {
 	AUTO *p;
-	char znacka[52];
-	int i = 0,suma;
+	char znacka[52],c;
+	int i = 1,suma;
 	p = *prvy;
+	c = getchar();
 	fgets(znacka, 52, stdin);
 	scanf("%d", &suma);
 	while (p != NULL)
 	{
-		if ((zhoda(p->znacka, znacka) == 1) && (suma <= p->cena))
+		if ((zhoda(p->znacka, znacka) == 1) && (suma >= p->cena))
 		{
 			printf("%d.\nkategoria: %sznacka: %spredajca: %s", i, p->kategoria, p->znacka, p->predajca);
-			printf("cena: %d\ndatum_vyroby: %d\nstav_vozidla: %s", p->cena, p->datum_v, p->stav);
+			printf("cena: %d\nrok_vyroby: %d\nstav_vozidla: %s", p->cena, p->datum_v, p->stav);
 			i++;
 		}
 		p = p->dalsi;
 	}
-	if (i == 0)printf("Ziadna zhoda\n");
+	if (i == 0)printf("V ponuke nie su pozadovane auta\n");
 }
 
  void aktualizuj(AUTO **prvy)
 {
 	AUTO *p;
-	char znacka[52];
+	char znacka[52], c;
 	int i = 0, rok;
 	p = *prvy;
+
+ 	c = getchar();
 	fgets(znacka, 52, stdin);
 	scanf("%d", &rok);
 	while (p != NULL)
@@ -244,7 +250,7 @@
 		}
 		p = p->dalsi;
 	}
-	printf("Aktualizovalo sa %d zaznamov", i);
+	printf("Aktualizovalo sa %d zaznamov\n", i);
 }
 
  void uvolni(AUTO **prvy)
@@ -272,6 +278,29 @@
 {
 	FILE *f;
 	AUTO *prvy = NULL;
+	char c;
+
+ 	while (scanf("%c", &c) == 1)
+	{
+		if (c == 'n')
+		{
+			if (prvy != NULL) uvolni(&prvy);
+			nacitaj(&f, &prvy);
+		}
+		if (c == 'v') vypis(&prvy);
+		if (c == 'p') pridaj(&prvy);
+		if (c == 'z') zmaz(&prvy);
+		if (c == 'h') hladaj(&prvy);
+		if (c == 'a') aktualizuj(&prvy);
+		if (c == 'k')
+		{
+			uvolni(&prvy);
+			koniec();
+		}
+	}
+
+
+ 	/*
 	nacitaj(&f, &prvy);
 	vypis(&prvy);
 
@@ -280,7 +309,7 @@
 	//uvolni(&prvy);
 
  	vypis(&prvy);
-	/*pridaj(&prvy);
+	pridaj(&prvy);
 	vypis(&prvy);
 	zmaz(&prvy);
 	vypis(&prvy);
