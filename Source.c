@@ -54,10 +54,9 @@
 			aktualny->dalsi = NULL;
 			n++;
 		}
-		aktualny->dalsi = NULL;
 		printf("Nacitalo sa %d zaznamov.\n", n);
 	}
-	return;
+	closef(f);
 }
 
  void vypis(AUTO **prvy)
@@ -84,8 +83,8 @@
 	pridaj = (AUTO*)malloc(sizeof(AUTO));										//nacitam pridavanu polozku
 
  	scanf("%d", &pozicia);
-	c = getchar();				
-												//osetrenie proti nacitaniu konca riadku
+	c = getchar();		
+														//osetrenie proti nacitaniu konca riadku
  	fgets(pridaj->kategoria, 52, stdin);
 	fgets(pridaj->znacka, 52, stdin);
 	fgets(pridaj->predajca, 102, stdin);
