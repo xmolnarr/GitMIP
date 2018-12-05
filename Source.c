@@ -21,6 +21,8 @@
 	char x, c;
 	AUTO *aktualny;
 
+ 	//if (*prvy != NULL) uvolni(*prvy);
+
  	n = 0;
 	aktualny = (AUTO*)malloc(sizeof(AUTO));
 	*prvy = aktualny;
@@ -47,7 +49,7 @@
 			fscanf(f, "%d", &aktualny->cena);
 			fscanf(f, "%d", &aktualny->datum_v);
 			c = getc(f);
-			fgets(aktualny->stav, 52, f);
+			fgets(aktualny->stav, 202, f);
 			aktualny->dalsi = NULL;
 			n++;
 		}
@@ -242,7 +244,23 @@
 		}
 		p = p->dalsi;
 	}
-	printf("Aktualizovalo sa %d zaznamov\n", i);
+	printf("Aktualizovalo sa %d zaznamov", i);
+}
+
+ void uvolni(AUTO **prvy)
+{
+	AUTO *p,*pom = NULL;
+
+ 	p = *prvy;
+
+ 	while (p != NULL)
+	{
+		pom = p;
+		p = p->dalsi;
+		free(pom);
+		pom = NULL;
+	}
+	*prvy = NULL;
 }
 
  int main()
@@ -251,15 +269,21 @@
 	AUTO *prvy = NULL;
 	nacitaj(&f, &prvy);
 	vypis(&prvy);
+
+ 	uvolni(&prvy);
+	//nacitaj(&f, &prvy);
+	//uvolni(&prvy);
+
+ 	vypis(&prvy);
 	/*pridaj(&prvy);
 	vypis(&prvy);
 	zmaz(&prvy);
 	vypis(&prvy);
 
- 	hladaj(&prvy);*/
+ 	hladaj(&prvy);
 
  	aktualizuj(&prvy);
-	vypis(&prvy);
+	vypis(&prvy);*/
 
  	return 0;
 }
