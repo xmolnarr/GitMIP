@@ -263,6 +263,11 @@
 	*prvy = NULL;
 }
 
+ void koniec()
+{
+	exit(0);
+}
+
  int main()
 {
 	FILE *f;
