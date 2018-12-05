@@ -119,7 +119,42 @@
 		pridaj->dalsi = NULL;
 	}
 
+
  }
+
+
+
+ void zmaz(AUTO **prvy)
+{
+	AUTO *p, *pred = NULL;
+	char slovo[52];
+	p = *prvy;
+	fgets(slovo, 52, stdin);
+	printf("%s", slovo);
+	while (p != NULL)
+	{
+		if (porovnaj(p->znacka, slovo) == 1)
+		{
+			if (pred == NULL) 
+			{ 
+				p = p->dalsi;
+				*prvy = p;
+			}
+			else
+			{
+				pred->dalsi = p->dalsi;
+				free(p);
+				p = pred->dalsi;
+			}
+		}
+		else
+		{
+			pred = p;
+			p = p->dalsi;
+		}
+	}
+	
+}
 
  int main()
 {
@@ -127,7 +162,9 @@
 	AUTO *prvy = NULL;
 	nacitaj(&f, &prvy);
 	vypis(&prvy);
-	pridaj(&prvy);
+	/*pridaj(&prvy);
+	vypis(&prvy);*/
+	zmaz(&prvy);
 	vypis(&prvy);
 
  	return 0;
