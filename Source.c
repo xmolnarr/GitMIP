@@ -186,6 +186,22 @@
 	printf("Vymazalo sa %d zaznamov\n", k);
 }
 
+ int zhoda(char *slovo1, char *slovo2)
+{
+	int i = 0, k = 0;
+
+ 	while (slovo1[i] != '\0')
+	{
+		k = 1;
+		if (((slovo1[i] % 65) % 32) != ((slovo2[i] % 65) % 32))
+		{
+			k = 2;
+			break;
+		}
+		i++;
+	}
+	return k;
+}
 
  void hladaj(AUTO **prvy)
 {
