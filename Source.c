@@ -43,7 +43,7 @@
 			
 			fgets(aktualny->kategoria, 52, f);
 			fgets(aktualny->znacka, 52, f);
-			fgets(aktualny->predajca, 52, f);
+			fgets(aktualny->predajca, 102, f);
 			fscanf(f, "%d", &aktualny->cena);
 			fscanf(f, "%d", &aktualny->datum_v);
 			c = getc(f);
@@ -207,7 +207,7 @@
 {
 	AUTO *p;
 	char znacka[52];
-	int i = 0, suma;
+	int i = 0,suma;
 	p = *prvy;
 	fgets(znacka, 52, stdin);
 	scanf("%d", &suma);
@@ -221,7 +221,28 @@
 		}
 		p = p->dalsi;
 	}
-	if (i == 0)printf("V ponuke nie su pozadovane auta\n");
+	if (i == 0)printf("Ziadna zhoda\n");
+}
+
+ void aktualizuj(AUTO **prvy)
+{
+	AUTO *p;
+	char znacka[52];
+	int i = 0, rok;
+	p = *prvy;
+	fgets(znacka, 52, stdin);
+	scanf("%d", &rok);
+	while (p != NULL)
+	{
+		if ((zhoda(p->znacka, znacka) == 1) && (rok == p->datum_v))
+		{
+			p->cena = p->cena - 100;
+			i++;
+			if (p->cena < 0)p->cena = 0;
+		}
+		p = p->dalsi;
+	}
+	printf("Aktualizovalo sa %d zaznamov\n", i);
 }
 
  int main()
@@ -231,11 +252,14 @@
 	nacitaj(&f, &prvy);
 	vypis(&prvy);
 	/*pridaj(&prvy);
-	vypis(&prvy);*/
+	vypis(&prvy);
 	zmaz(&prvy);
 	vypis(&prvy);
 
- 	hladaj(&prvy);
+ 	hladaj(&prvy);*/
+
+ 	aktualizuj(&prvy);
+	vypis(&prvy);
 
  	return 0;
 }
