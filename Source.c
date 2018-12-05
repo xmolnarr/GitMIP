@@ -135,6 +135,7 @@
 			while (slovo2[j] != '\n')
 			{
 				k = 1;
+				//j++;
 				if (((slovo1[i+j]%65)%32) != ((slovo2[j]%65)%32))
 				{
 					k = 2;
@@ -147,12 +148,14 @@
 		i++;
 	}
 
+
  	return k;
 }
 
  void zmaz(AUTO **prvy)
 {
 	AUTO *p, *pred = NULL;
+	int k = 0;
 	char slovo[52];
 	p = *prvy;
 	fgets(slovo, 52, stdin);
@@ -161,6 +164,7 @@
 	{
 		if (porovnaj(p->znacka, slovo) == 1)
 		{
+			k++;
 			if (pred == NULL) 
 			{ 
 				p = p->dalsi;
@@ -179,7 +183,29 @@
 			p = p->dalsi;
 		}
 	}
-	
+	printf("Vymazalo sa %d zaznamov\n", k);
+}
+
+
+ void hladaj(AUTO **prvy)
+{
+	AUTO *p;
+	char znacka[52];
+	int i = 0, suma;
+	p = *prvy;
+	fgets(znacka, 52, stdin);
+	scanf("%d", &suma);
+	while (p != NULL)
+	{
+		if ((zhoda(p->znacka, znacka) == 1) && (suma <= p->cena))
+		{
+			printf("%d.\nkategoria: %sznacka: %spredajca: %s", i, p->kategoria, p->znacka, p->predajca);
+			printf("cena: %d\ndatum_vyroby: %d\nstav_vozidla: %s", p->cena, p->datum_v, p->stav);
+			i++;
+		}
+		p = p->dalsi;
+	}
+	if (i == 0)printf("V ponuke nie su pozadovane auta\n");
 }
 
  int main()
@@ -192,6 +218,8 @@
 	vypis(&prvy);*/
 	zmaz(&prvy);
 	vypis(&prvy);
+
+ 	hladaj(&prvy);
 
  	return 0;
 }
